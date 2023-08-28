@@ -31,6 +31,8 @@ The following is a step-by-step walkthrough of how to use 01-tfc-setup:
    - This will deploy the resources specific in the Terraform config file
 7. Replace the Values in the `AWS_CREDS_SETUP`, `HCP_CREDS_SETUP` and `TFE_TOKEN` variable sets
 
+_Note: We're not using TFC managed runners here to reduce complexity, instead this run will be done locally and the state file will be managed in the same folder as well (becareful not to push the state file to github!)_
+
 ## Features
 
 The following will be provisioned as a result of the terraform configuration file:
