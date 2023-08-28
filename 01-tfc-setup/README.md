@@ -21,11 +21,14 @@ _Note: If you're using terraform variables, replace the value in the provider.tf
 The following is a step-by-step walkthrough of how to use 01-tfc-setup:
 
 1. Assuming that you have cloned this repo onto your own machine, change into this directory with your terminal: `cd 01-tfc-setup`
-2. Run `terraform login` - this will setup your local machine to authenticate and work with Terraform Cloud
+2. Run `terraform login`
+   - This will setup your local machine to authenticate and work with Terraform Cloud
 3. Terraform login should take you to a page that prompts you to create a [User API Token](https://developer.hashicorp.com/terraform/tutorials/cloud/cloud-login#generate-a-token); add the token to the cli
 4. Once you're authenticated, go into variables.tf and change the default value of the `tfc_org_name` variable to your Organisation Name
-5. Run `terraform init` - this will get terraform to download relevant provider and modules to use in the provisioning process
-6. Run `terraform apply --auto-approve` - this will deploy the resources specific in the Terraform config file
+5. Run `terraform init`
+   - This will get terraform to download relevant provider and modules to use in the provisioning process
+6. Run `terraform apply --auto-approve`
+   - This will deploy the resources specific in the Terraform config file
 7. Replace the Values in the `AWS_CREDS_SETUP`, `HCP_CREDS_SETUP` and `TFE_TOKEN` variable sets
 
 ## Features
