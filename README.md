@@ -8,6 +8,7 @@ This repo will contain everything you need to deploy HCP Vault, and demo specifi
 - [Prerequisites](#prerequisites)
 - [Description](#description)
 - [Features](#features)
+- [How-to Steps](#steps)
 - [Contributing](#contributing)
 
 ## Prerequisites
@@ -19,7 +20,7 @@ It's expected that to be successful in using this repo, users should know the fo
 1. Terraform ([Installation Setup](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli))
 2. Terraform Cloud ([Sign up link](https://app.terraform.io/public/signup/account))
 3. HCP Vault ([Sign up link](https://portal.cloud.hashicorp.com/sign-up))
-   - [Service Principal](https://developer.hashicorp.com/hcp/docs/hcp/security/service-principals#create-a-service-principal)
+   - [Service Principal Setup](https://developer.hashicorp.com/hcp/docs/hcp/security/service-principals#create-a-service-principal)
 
 _Note: If you're using terraform variables, replace the value in the provider.tf file, otherwise set these as env variables_
 
@@ -37,6 +38,13 @@ This Repo will help you stand up the following:
 | 02-hcpv-cluster       | Deploy HCP Vault - Plus tier                                       |
 | 03-hcpv-control-group | Configures Vault Cluster to operate with Control Groups demo       |
 | 09-hcpv-general-demo  | Configures Vault Cluster to run a few general Vault capabilities   |
+
+## How-to Steps
+
+The following walks you through how to use this repository:
+
+1. Fork this repo (if you intend to store this into your own github account)
+2. Git clone this repo into your local machine
 
 ## Contributing
 

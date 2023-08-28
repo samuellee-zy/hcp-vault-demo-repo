@@ -41,3 +41,18 @@ resource "tfe_variable" "hcp-client-secret" {
   variable_set_id = tfe_variable_set.hcp-creds-setup.id
   sensitive       = true
 }
+
+resource "tfe_variable_set" "tfe-token" {
+  name         = "TFE Token"
+  description  = "Token to access TFC environment and workspaces"
+  organization = var.tfc_org_name
+  global       = true
+}
+
+resource "tfe_variable" "tfe-token" {
+  key             = "TFE_TOKEN"
+  value           = "INSERT_USER_API_TOKEN_VALUE"
+  category        = "env"
+  variable_set_id = tfe_variable_set.tfe-token.id
+  sensitive       = true
+}
