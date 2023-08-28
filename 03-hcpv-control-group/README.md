@@ -1,33 +1,16 @@
-# HCP Vault Control Group Demo
+# HCP Vault Control Groups Demo
 
-This repo contains a HCP Vault Control Group Demo that aims to assist with standing up your own HCP Vault environment, with a few configurations to automatically test the Control Group functionality.
+This folder contains all the necessary Terraform code to configure your HCP Vault cluster for the Control Groups demo
 
 ## Table of Contents
 
-- [Project Title](#project-title)
-- [Description](#description)
+- [Prerequisites](#prerequisites)
+- [How-to Steps](#steps)
 - [Features](#features)
-- [Usage](#usage)
-- [Installation](#installation)
-- [Contributing](#contributing)
 
-## Description
+## Prerequisites
 
-HashiCorp Vault Control groups add additional authorization factors to be required before processing requests to increase the governance, accountability, and security of your secrets. When a control group is required for a request, the requesting client receives the wrapping token in return. Only when all authorizations are satisfied, the wrapping token can be used to unwrap the requested secrets.
-
-## Features
-
-This Repo will help you stand up the following:
-
-- 3x Entities (Adam, Anna, Sam)
-- 3x Secret Paths (dev, test, prod)
-- 2x Policies (dev, manager)
-
-## Usage
-
-This repo was built with Terraform Cloud in mind, but Terraform OSS should operate fine as well.
-
-You will need to set the following variables:
+Assuming that you have set the AWS creds, HCP creds and TFE token variable sets, You will need to configure the following variables as part of this folder workflow:
 
 | Name                 | Location         |
 | -------------------- | ---------------- |
@@ -37,23 +20,28 @@ You will need to set the following variables:
 
 _Note: If you're using terraform variables, replace the value in the provider.tf file, otherwise set these as env variables_
 
-## Installation
+## How-to Steps
 
-### Step 1 - Set variable values in the variables.tfvars file
-Ensure that you've changed the variable values in the .tfvars file:
-- *vault_workspace_name* must indicate the workspace name that you've previously used to deploy the HCP Vault Cluster. 
-- *org_name* and *workspace_name* values in the provider.tf file should match the variables.tfvars values as well.
+The following is a step-by-step walkthrough of how to use 01-tfc-setup:
 
-### Step 2 - Initialise Terraform
-Run Terraform Init to initialise the workspace in your Terraform Cloud environment
+1. Assuming that you have cloned this repo onto your own machine, change into this directory with your terminal: `cd ../03-hcpv-control-group`
+2. Change the variables values in the `variables.tfvars` file. The `vault_workspace_name` must indicate the Terraform Cloud workspace name that you've previously used to deploy the HCP Vault Cluster. By default the workspace name should be _hcpv-control-group_ if you're using the previous terraform code to deploy
+3. As per the prerequisites, change the `org_name` and `workspace_name` in the `provider.tf` file for the tfe provider. This should match the same values as in the `variables.tfvars` file
+4. Run `terraform init`
+   - This will get terraform to download relevant provider and modules to use in the provisioning process
+5. Run `terraform apply --auto-approve -var-file variables.tfvars`
+   - This will deploy the resources specific in the Terraform config file
 
-`terraform init`
+_Note: We're not using TFC managed runners here to reduce complexity, instead this run will be done locally and the state file will be managed in the same folder as well (becareful not to push the state file to github!)_
 
-### Step 3 - Provisioning the Vault configuration with Terraform Apply
-Run Terraform Apply to enable terraform to initialise the provisioning of the vault configuration for your HCP Vault Cluster
+## Features
 
-`terraform apply --auto-approve -var-file "variables.tfvars"`
+The following will be provisioned as a result of the terraform configuration file:
 
-## Contributing
-
-Shoutout to Jamie Wright for the inspiration, and also for helping write the bash script needed to monitor the log outputs.
+| Resources               | Feature                                                                                                                |
+| ----------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Entities                | Creates Entities (Adam, Anna and Sam) in the Vault                                                                     |
+| KV V2 Secrets Engine    | Spins up a [KV V2 Secrets Engine](https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2)                         |
+| Database Secrets Engine | Spins up a [Postgres Database Secrets Engine](https://developer.hashicorp.com/vault/docs/secrets/databases/postgresql) |
+| AWS RDS                 | Spins up an AWS Postgres RDS                                                                                           |
+| ACL policies            | Spins up a Dev and Manager policies for use to access specific paths and control group permissions                     |
