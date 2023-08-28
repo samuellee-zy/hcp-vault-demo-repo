@@ -1,57 +1,46 @@
-# HCP Vault Cluster Setup
+# HCP Vault Deployment
 
-This repo contains demos built around HCP Vault. This repo aims to assist with standing up your own HCP Vault environment, with a few configurations to automatically test other features and capabilities of HCP Vault. Note that the way this repo aims to be build, is that you can copy the _demo-func.tf_ file into any of the directories to combine features and do a single HCP Vault deployment.
+This repo contains demos built around HCP Vault. This repo aims to assist with standing up your own HCP Vault environment.
 
 ## Table of Contents
 
-- [Project Title](#project-title)
-- [Description](#description)
+- [Prerequisites](#prerequisites)
+- [How-to Steps](#steps)
 - [Features](#features)
-- [Usage](#usage)
-- [Installation](#installation)
-- [Contributing](#contributing)
 
-## Description
+## Prerequisites
 
-hcp-vault-cluster file contains all the terraform configs needed to automatically deploy your own HCP Cluster with a few HCP Vault features and functionalities, depending on what you're interested in
+Assuming that you have set the AWS creds, HCP creds and TFE token variable sets, You will need to configure the following variables as part of this folder workflow:
 
-## Features
-
-This Repo will help you stand up the following:
-
-- 1x Vault Cluster
-
-## Usage
-
-This repo was built with Terraform Cloud in mind, but Terraform OSS should operate fine as well.
-
-Ensure that you have created a [Service Principal](https://developer.hashicorp.com/hcp/docs/hcp/security/service-principals#create-a-service-principal) in HashiCorp Cloud Platform.
-
-You will need to set the following variables:
-
-| Name              | Location         |
-| ----------------- | ---------------- |
-| HCP_CLIENT_ID     | provider.tf      |
-| HCP_CLIENT_SECRET | provider.tf      |
-| region            | variables.tfvars |
-| hcpv_name         | variables.tfvars |
-| cloud_provider    | variables.tfvars |
-| tier              | variables.tfvars |
+| Name           | Location                         |
+| -------------- | -------------------------------- |
+| project_id     | provider.tf (hcp provider block) |
+| region         | variables.tfvars                 |
+| hcpv_name      | variables.tfvars                 |
+| cloud_provider | variables.tfvars                 |
+| tier           | variables.tfvars                 |
 
 _Note: If you're using terraform variables, replace the value in the provider.tf file, otherwise set these as env variables_
 
-## Installation
+## How-to Steps
 
-### Step 1 - terraform init
-Initiative a Terraform Cloud Workspace
+The following is a step-by-step walkthrough of how to use 01-tfc-setup:
 
-`terraform init`
+1. Assuming that you have cloned this repo onto your own machine, change into this directory with your terminal: `cd ../02-hcpv-cluster`
+2. As per the prerequisites, change the `project_id` in the `provider.tf` file for the hcp provider, and all relevant values in the `variables.tfvars` file
+3. Run `terraform init`
+   - This will get terraform to download relevant provider and modules to use in the provisioning process
+4. Run `terraform apply --auto-approve -var-file variables.tfvars`
+   - This will deploy the resources specific in the Terraform config file
 
-### Step 2 - terraform apply
-Assuming that you've made all the variable changes as mentioned in Usage, next is to provision your HCP Vault cluster
+_Note: We're not using TFC managed runners here to reduce complexity, instead this run will be done locally and the state file will be managed in the same folder as well (becareful not to push the state file to github!)_
 
-`terraform apply`
+## Features
 
-## Contributing
+The following will be provisioned as a result of the terraform configuration file:
 
-Shoutout to Jamie Wright for the inspiration
+| Resources                     | Feature                                                                                                      |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| HCP Vault                     | SaaS HashiCorp Vault deployed on the HashiCorp Cloud Platform                                                |
+| HCP HVN                       | HashiCorp Virtual Networks, delegated an IPv4 CIDR range for HCP to use to create resources in cloud network |
+| HCP Vault Cluster Admin Token | Admin token needed to make configuration changes to HCP Vault                                                |
